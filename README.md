@@ -1,23 +1,6 @@
-# reddit-clone
-Blog application similar to reddit with react, node js, express js, mongodb
+# SHESAIDIT ( reddit like clone ) 
+Blog application meant for women to come together and seek inspirtation, discuss topics, and even find friends! Similar to reddit with this application was created using M.E.R.N
 
-
-Features:
-
-- register/login
-- nested comments
-- responsive design
-- lazy loading pages
-- create/delete post or comment
-- upvote/downvote post or comment
-- search posts
-- save post
-
-### Installation
-
-```shell
-git clone https://github.com/furkankaraagc/reddit-clone-mern
-```
 
 ### Frontend Install packages
  
