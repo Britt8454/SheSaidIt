@@ -10,6 +10,7 @@ import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
+import DeleteIcons from '@mui/icons-material/Delete';
 
 export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
   const [savedPosts, setSavedPosts] = useState([]);
@@ -20,13 +21,15 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
+  const url = 'https://blog-app-mern-85pk.onrender.com/'
+
   useEffect(() => {
     isSaved();
   }, [fetchData]);
 
   const isSaved = async () => {
     if (token) {
-      await fetch('https://blog-app-mern-85pk.onrender.com/user', {
+      await fetch( url + 'user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +61,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
     if (!isLoggedIn) {
       return setModal(true);
     }
-    await fetch('https://blog-app-mern-85pk.onrender.com/vote', {
+    await fetch( url + 'vote', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +79,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
     if (!isLoggedIn) {
       return setModal(true);
     }
-    await fetch('https://blog-app-mern-85pk.onrender.com/savePost', {
+    await fetch( url + 'savePost', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -92,7 +95,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
     fetchData();
   };
   const deleteHandler = async (post) => {
-    await fetch('https://blog-app-mern-85pk.onrender.com/deletePost', {
+    await fetch( url + 'deletePost', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -103,10 +106,11 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => toast.success(data.message));
+      .then((data) => toast.success(data.message))
+      .then((res) => console.log(res));
 
     fetchData();
-    await fetch('https://blog-app-mern-85pk.onrender.com/deleteComment', {
+    await fetch( url + 'deleteComment', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: token },
       body: JSON.stringify({
@@ -119,7 +123,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
   };
   return (
     <div className='x'>
-      {post && savedPosts && (
+      {post && (
         <div
           onClick={() => {
             if (
@@ -130,29 +134,14 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
             }
           }}
           key={post._id}
-          className=' hover:border-white-500 transition-all  ease-in-out  flex justify-start  cursor-pointer mb-2  border-whitw-600 border bg-[#ffb3c6] text-[#f6f7f9] md:w-[650px] md:mx-auto'
-          style={{position: 'relative'}}
+          className=' hover:border-gray-500 transition-all  ease-in-out  flex justify-start  cursor-pointer mb-2  border-gray-600 border bg-[#23272F] text-[#f6f7f9] md:w-[650px] md:mx-auto'
         >
-      <div
-            style={{
-              position: 'absolute',
-              top:'6px',
-              right: '-26px',
-              width: 0,
-              height: 0,
-              borderLeft: '15px solid transparent',
-              borderRight: '15px solid transparent',
-              borderBottom: '35px solid #ffb3c6',
-              transform: 'rotate(90deg)'
-            }}
-        />
-          
           <div
             onClick={(e) => e.stopPropagation()}
-            className='bg-[#fb6f92] flex flex-col justify-start text-center p-2 '
+            className='bg-[#1f2229] flex flex-col justify-start text-center p-2 '
           >
             <button
-              className='hover:bg-[#ffb3c6] transition-all ease-in-out rounded-lg p-1'
+              className='hover:bg-[#343944] transition-all  ease-in-out rounded-lg p-1'
               onClick={() => {
                 voteHandler(post, 'upvote');
               }}
@@ -172,7 +161,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
 
             <span className='font-semibold'> {post.vote} </span>
             <button
-              className='hover:bg-[#ffb3c6]  transition-all  ease-in-out rounded-lg p-1 '
+              className='hover:bg-[#343944]  transition-all  ease-in-out rounded-lg p-1 '
               onClick={() => {
                 voteHandler(post, 'downvote');
               }}
@@ -197,7 +186,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
                   e.stopPropagation();
                   navigate(`/${post.subcategory}`);
                 }}
-                className='font-semibold text-sm box-border border-b border-transparent hover:bg-[#ffc2d1] transition-all  ease-in-out rounded-lg px-1'
+                className='font-semibold text-sm box-border border-b border-transparent hover:bg-[#343944] transition-all  ease-in-out rounded-lg px-1'
               >
                 r/{post.subcategory}
               </p>
@@ -210,7 +199,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
             <p className='font my-1'>{post.body}</p>
             <div className='flex  gap-3 opacity-80'>
               <div
-                className='flex hover:bg-[#fb6f92] rounded-lg p-2 transition-all  ease-in-out'
+                className='flex hover:bg-[#343944] rounded-lg p-2 transition-all  ease-in-out'
                 onClick={(e) => {
                   e.stopPropagation();
                   if (
@@ -229,7 +218,7 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
                 <p>{post.comments.length} Comments</p>
               </div>
               <div
-                className='flex hover:bg-[#fb6f92] rounded-lg p-2 transition-all  ease-in-out'
+                className='flex hover:bg-[#343944] rounded-lg p-2 transition-all  ease-in-out'
                 onClick={(e) => {
                   e.stopPropagation();
                   saveHandler(post);
@@ -249,6 +238,24 @@ export const Post = ({ post, isLoggedIn, setModal, fetchData, isSubmit }) => {
                     </i>
                     <p>Save</p>
                   </>
+                )}
+              </div>
+              <div
+                className='flex hover:bg-[#343944] rounded-lg p-2 transition-all  ease-in-out'
+              >
+                {post.username === localStorage.getItem('username') && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteHandler(post);
+                    }}
+                    className='flex  flex-row justify-center items-center'
+                  >
+                    <i className='opacity-75'>
+                      <DeleteIcons />
+                    </i>
+                    <p>Delete Post</p>
+                  </button>
                 )}
               </div>
             </div>
