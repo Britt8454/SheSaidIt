@@ -40,5 +40,3 @@ export const Posts = ({ isLoggedIn, setModal, sort, setSort }) => {
     </div>
   );
 };
-
-// hi im brit
